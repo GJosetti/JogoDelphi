@@ -1,0 +1,262 @@
+unit Jogo_True;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes,System.Generics.Collections, System.Classes, System.Variants,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Objects;
+
+type
+  TForm1 = class(TForm)
+    inimigo: TRectangle;
+    GamerTimer: TTimer;
+    spawn: TRectangle;
+    Spawner: TTimer;
+    procedure FormCreate(Sender: TObject);
+    procedure GamerTimerTimer(Sender: TObject);
+    procedure SpawnerTimer(Sender: TObject);
+    procedure a(Sender: TObject; var Key: Word; var KeyChar: WideChar;
+      Shift: TShiftState);
+    procedure FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Single);
+    procedure FormMouseWheel(Sender: TObject; Shift: TShiftState;
+      WheelDelta: Integer; var Handled: Boolean);
+    procedure inimigoClick(Sender: TObject);
+  private
+
+
+
+
+
+  public
+    { Public declarations }
+    //type TEnemies = class of TRectangle;
+     EnemiesList : TList<TRectangle>;
+
+
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.fmx}
+
+var i: Integer;
+var plantaSelect: TRectangle;
+var mouseY: Single;
+var mouseX: Single;
+
+//Criar Plantas
+var isSelecting: boolean;
+procedure TForm1.a(Sender: TObject; var Key: Word; var KeyChar: WideChar;
+  Shift: TShiftState);
+
+
+
+
+begin
+
+    if  not isSelecting then
+
+    begin
+
+      plantaSelect := TRectangle.Create(self);
+      plantaSelect.Parent := Self;
+
+      isSelecting := true;
+      plantaSelect.Fill.Color := TAlphaColor($33036303);
+
+      plantaSelect.Position.X := mouseX - (plantaSelect.Width/2);
+      plantaSelect.Position.Y := mouseY - (plantaSelect.Height/2);
+
+    end else
+    begin
+
+      plantaSelect.Destroy;
+      isSelecting := false;
+
+    end;
+
+
+
+end;
+
+
+
+ var PlantsList : TList<TRectangle>;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+
+ GamerTimer.Enabled := true;
+
+ EnemiesList := TList<TRectangle>.Create;
+ PlantsList := Tlist<TRectangle>.Create;
+
+ isSelecting := false;
+
+end;
+
+
+procedure CreatePlant (plantType: string);
+var Plant: TRectangle;
+
+
+begin
+
+  var myBitmap : TBitmap;
+
+  if isSelecting then
+
+  begin
+      if plantType = 'peashooter'  then
+    begin
+      myBitmap := TBitmap.Create;
+      Plant := TRectangle.Create(Form1);
+      Plant.Parent := Form1;
+      Plant.Position.X := plantaSelect.Position.X;
+      Plant.Position.Y :=  plantaSelect.Position.Y;
+      Plant.Fill.Kind :=  TBrushKind.Bitmap;
+      myBitmap.LoadFromFile('C:\Users\Guilherme Josetti\Documents\Embarcadero\Studio\Projects\Jogo PVZ\Win32\Debug\pvz.bmp');
+
+
+      Plant.Stroke.Thickness := 0;
+
+      Plant.Fill.Bitmap.Bitmap := myBitmap;
+      Plant.Fill.Bitmap.WrapMode := TWrapMode.TileStretch;
+
+
+      PlantsList.Add(Plant);
+      plantaSelect.Destroy;
+      isSelecting := false;
+    end;
+
+
+
+  end;
+
+
+
+end;
+
+
+
+
+
+
+
+procedure TForm1.FormMouseMove(Sender: TObject; Shift: TShiftState; X,
+  Y: Single);
+begin
+
+  mouseY := Y;
+  mouseX := X;
+
+end;
+
+procedure TForm1.FormMouseWheel(Sender: TObject; Shift: TShiftState;
+  WheelDelta: Integer; var Handled: Boolean);
+begin
+  CreatePlant('peashooter');
+end;
+
+var speed: Integer;
+
+
+procedure TForm1.GamerTimerTimer(Sender: TObject);
+begin
+
+
+
+  inimigo.Position.X := inimigo.Position.X + 2;
+
+  for i := 0 to (EnemiesList.Count -1) do
+
+  begin
+
+
+
+   
+
+
+    try
+
+      EnemiesList[i].fill.Color :=  TAlphaColor($FFD10808);
+
+      EnemiesList[i].Position.X := EnemiesList[i].Position.X -2;
+
+      if isSelecting then
+      begin
+
+         plantaSelect.Position.X := mouseX - (plantaSelect.Width/2);
+         plantaSelect.Position.Y := mouseY - (plantaSelect.Height/2);
+
+      end;
+
+
+    except
+
+      continue;
+
+    end;
+
+
+end;
+
+
+ 
+
+ end;
+
+
+
+
+
+procedure TForm1.inimigoClick(Sender: TObject);
+begin
+
+end;
+
+//end;
+
+
+
+
+procedure TForm1.SpawnerTimer(Sender: TObject);
+
+var novoInimigo: TRectangle;
+var enemyBitmap : TBitmap;
+
+begin
+
+
+enemyBitmap := TBitmap.Create;
+
+spawn.Position.y := Random(500);
+novoInimigo := TRectangle.Create(self);
+novoInimigo.Parent := Self;
+
+EnemiesList.Add(novoInimigo);
+
+novoInimigo.Position.x := spawn.Position.X;
+novoInimigo.Position.y := spawn.Position.Y;
+
+
+novoInimigo.Fill.Kind :=  TBrushKind.Bitmap;
+enemyBitmap.LoadFromFile('C:\Users\Guilherme Josetti\Documents\Embarcadero\Studio\Projects\Jogo PVZ\Win32\Debug\pvz.bmp');
+
+
+novoInimigo.Stroke.Thickness := 0;
+
+novoInimigo.Fill.Bitmap.Bitmap := enemyBitmap;
+novoInimigo.Fill.Bitmap.WrapMode := TWrapMode.TileStretch;
+
+
+
+
+
+
+end;
+
+end.

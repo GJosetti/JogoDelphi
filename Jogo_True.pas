@@ -20,6 +20,7 @@ type
     procedure FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Single);
     procedure FormMouseWheel(Sender: TObject; Shift: TShiftState;
       WheelDelta: Integer; var Handled: Boolean);
+    procedure inimigoClick(Sender: TObject);
   private
 
 
@@ -104,23 +105,26 @@ var Plant: TRectangle;
 
 begin
 
-  var Bitmap : TBitmap;
+  var myBitmap : TBitmap;
 
   if isSelecting then
 
   begin
       if plantType = 'peashooter'  then
     begin
-      bitmap := TBitmap.Create;
+      myBitmap := TBitmap.Create;
       Plant := TRectangle.Create(Form1);
       Plant.Parent := Form1;
       Plant.Position.X := plantaSelect.Position.X;
       Plant.Position.Y :=  plantaSelect.Position.Y;
       Plant.Fill.Kind :=  TBrushKind.Bitmap;
-      Bitmap.LoadFromFile('pvz.png');
-     
-      Plant.Canvas.Fill.Bitmap.Bitmap := bitmap;
-     
+      myBitmap.LoadFromFile('C:\Users\Guilherme Josetti\Documents\Embarcadero\Studio\Projects\Jogo PVZ\Win32\Debug\pvz.bmp');
+
+
+      Plant.Stroke.Thickness := 0;
+
+      Plant.Fill.Bitmap.Bitmap := myBitmap;
+      Plant.Fill.Bitmap.WrapMode := TWrapMode.TileStretch;
 
 
       PlantsList.Add(Plant);
@@ -209,6 +213,11 @@ end;
 
 
 
+procedure TForm1.inimigoClick(Sender: TObject);
+begin
+
+end;
+
 //end;
 
 
@@ -217,9 +226,12 @@ end;
 procedure TForm1.SpawnerTimer(Sender: TObject);
 
 var novoInimigo: TRectangle;
+var enemyBitmap : TBitmap;
 
 begin
 
+
+enemyBitmap := TBitmap.Create;
 
 spawn.Position.y := Random(500);
 novoInimigo := TRectangle.Create(self);
@@ -229,6 +241,16 @@ EnemiesList.Add(novoInimigo);
 
 novoInimigo.Position.x := spawn.Position.X;
 novoInimigo.Position.y := spawn.Position.Y;
+
+
+novoInimigo.Fill.Kind :=  TBrushKind.Bitmap;
+enemyBitmap.LoadFromFile('C:\Users\Guilherme Josetti\Documents\Embarcadero\Studio\Projects\Jogo PVZ\Win32\Debug\R.bmp');
+
+
+novoInimigo.Stroke.Thickness := 0;
+
+novoInimigo.Fill.Bitmap.Bitmap := enemyBitmap;
+novoInimigo.Fill.Bitmap.WrapMode := TWrapMode.TileStretch;
 
 
 

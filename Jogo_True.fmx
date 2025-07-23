@@ -3,7 +3,7 @@ object Form1: TForm1
   Top = 0
   Caption = 'Form1'
   ClientHeight = 564
-  ClientWidth = 848
+  ClientWidth = 874
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -6789,15 +6789,17 @@ object Form1: TForm1
       F67C5E2E0000000049454E44AE426082}
     Fill.Bitmap.WrapMode = TileStretch
     Fill.Kind = Bitmap
-    Position.X = 832.000000000000000000
-    Position.Y = 224.000000000000000000
+    Position.X = 723.000000000000000000
+    Position.Y = 240.000000000000000000
     Size.Width = 50.000000000000000000
     Size.Height = 50.000000000000000000
     Size.PlatformDefault = False
+    OnClick = inimigoClick
   end
   object spawn: TRectangle
     Fill.Color = xFF036303
     Position.X = 723.000000000000000000
+    Position.Y = 40.000000000000000000
     Size.Width = 50.000000000000000000
     Size.Height = 50.000000000000000000
     Size.PlatformDefault = False
